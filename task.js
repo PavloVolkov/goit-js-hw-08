@@ -48,12 +48,10 @@ function onGalleryClick(e) {
 
   modalCloseBtn.addEventListener("click", onModalCloseBtnClick);
 
-  // galleryEl.addEventListener("keydown", onModalCloseBtnEscDw);
+  galleryEl.addEventListener("keydown", onModalCloseBtnEscDw);
   gallery.addEventListener("keydown", onArrowRightKeyDown);
   gallery.addEventListener("keydown", onArrowLeftKeyDown);
-  const isOpen = document.querySelector(".is-open");
-  console.log(isOpen);
-  isOpen.addEventListener("keydown", onModalCloseBtnEscDw);
+
   let currentModalUrl = "";
   let nexturl;
 
