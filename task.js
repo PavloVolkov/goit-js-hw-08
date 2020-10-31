@@ -40,7 +40,6 @@ function onGalleryClick(e) {
   modal.classList.add("is-open");
 
   modalInnerImage.src = e.target.dataset.source;
-
   const modalClose = document.querySelector(".lightbox__overlay");
   modalClose.addEventListener("click", onModalClose);
 
@@ -49,13 +48,14 @@ function onGalleryClick(e) {
 
   modalCloseBtn.addEventListener("click", onModalCloseBtnClick);
 
-  galleryEl.addEventListener("keydown", onModalCloseBtnEscDw);
+  // galleryEl.addEventListener("keydown", onModalCloseBtnEscDw);
   gallery.addEventListener("keydown", onArrowRightKeyDown);
   gallery.addEventListener("keydown", onArrowLeftKeyDown);
-  function closeFn() {
-    modal.classList.remove("is-open");
-    modalInnerImage.src = "";
-  }
+  const isOpen = document.querySelector(".is-open");
+  console.log(isOpen);
+  isOpen.addEventListener("keydown", onModalCloseBtnEscDw);
+  let currentModalUrl = "";
+  let nexturl;
 
   function onModalCloseBtnClick(e) {
     closeFn();
@@ -65,56 +65,53 @@ function onGalleryClick(e) {
   }
 
   function onModalCloseBtnEscDw(e) {
-    e.preventDefault();
-    if (e.code !== "Escape") {
-    }
     if (e.code === "Escape") {
       closeFn();
     }
   }
+  function onArrowRightKeyDown(e) {
+    if (e.code === "ArrowRight") {
+      if (currentModalUrl === "") {
+        currentModalUrl = modalInnerImage.src;
+      }
+      if (currentModalUrl !== "") {
+        items.forEach((el, index) => {
+          if (index === 8) {
+            return;
+          }
+          if (el.original === currentModalUrl) {
+            nexturl = items[`${index + 1}`].original;
+          }
+        });
+
+        currentModalUrl = nexturl;
+      }
+    }
+  }
+  function onArrowLeftKeyDown(e) {
+    if (e.code === "ArrowLeft") {
+      if (currentModalUrl === "") {
+        currentModalUrl = modalInnerImage.src;
+      }
+      if (currentModalUrl !== "") {
+        items.find((el, index) => {
+          if (index === 0) {
+            return;
+          }
+          if (el.original === currentModalUrl) {
+            nexturl = items[`${index - 1}`].original;
+          }
+        });
+        currentModalUrl = nexturl;
+      }
+    }
+    modalInnerImage.src = nexturl;
+  }
+
+  function closeFn() {
+    modal.classList.remove("is-open");
+    modalInnerImage.src = "";
+  }
 }
 
 /** change to next or prev by arrows */
-gallery.addEventListener("keydown", onArrowRightKeyDown);
-gallery.addEventListener("keydown", onArrowLeftKeyDown);
-let currentModalUrl = "";
-let nexturl;
-
-function onArrowRightKeyDown(e) {
-  if (e.code === "ArrowRight") {
-    if (currentModalUrl === "") {
-      currentModalUrl = modalInnerImage.src;
-    }
-    if (currentModalUrl !== "") {
-      items.forEach((el, index) => {
-        if (index === 8) {
-          return;
-        }
-        if (el.original === currentModalUrl) {
-          nexturl = items[`${index + 1}`].original;
-        }
-      });
-
-      currentModalUrl = nexturl;
-    }
-  }
-}
-function onArrowLeftKeyDown(e) {
-  if (e.code === "ArrowLeft") {
-    if (currentModalUrl === "") {
-      currentModalUrl = modalInnerImage.src;
-    }
-    if (currentModalUrl !== "") {
-      items.find((el, index) => {
-        if (index === 0) {
-          return;
-        }
-        if (el.original === currentModalUrl) {
-          nexturl = items[`${index - 1}`].original;
-        }
-      });
-      currentModalUrl = nexturl;
-    }
-  }
-  modalInnerImage.src = nexturl;
-}
