@@ -108,3 +108,4 @@ function closeFn() {
   modalInnerImage.src = "";
 }
 /** change to next or prev by arrows */
+console.log("1")
